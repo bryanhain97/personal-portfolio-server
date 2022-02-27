@@ -7,3 +7,7 @@ app.use(express.json())
 app.listen(PORT, () =>  {
     console.log(`App listening on PORT: ${PORT}`)
 })
+
+app.get('/', (req,res) => {
+    res.send('hello from thatguybryan-server.')
+})
