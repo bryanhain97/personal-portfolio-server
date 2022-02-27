@@ -11,7 +11,7 @@ app.listen(PORT, () =>  {
 })
 
 app.get('/', (req,res) => {
-    res.send('hello from thatguybryan-server.')
+    res.send(JSON.stringify('hello from thatguybryan-server.'))
 })
 app.get('/cool', (req,res) => {
     res.send(cool())
