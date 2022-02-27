@@ -10,7 +10,6 @@
   "author": "Bryan Hain",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^16.0.0",
     "express": "^4.17.3"
   }
 }
