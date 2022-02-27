@@ -3,7 +3,7 @@ const app = express();
 const cool = require('cool-ascii-faces')
 require('dotenv').config()
 
-const PORT = process.env.SERVER_PORT
+const PORT = process.env.SERVER_PORT || 5000
 app.use(express.json())
 app.listen(PORT, () =>  {
     console.log(`App listening on PORT: ${PORT}`)
