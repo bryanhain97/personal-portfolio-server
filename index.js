@@ -2,9 +2,8 @@ const express = require('express');
 const app = express();
 const cool = require('cool-ascii-faces')
 
-const PORT = process.env.SERVER_PORT || 5000
 app.use(express.json())
-app.listen(PORT, () =>  {
+app.listen(process.env.PORT || 5000, () =>  {
     console.log(`App listening on PORT: ${PORT}`)
 })
 
