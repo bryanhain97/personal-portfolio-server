@@ -1,36 +1,52 @@
 const express = require('express');
 const app = express();
 const cool = require('cool-ascii-faces')
-const cors =  require('cors');
-const stripe = require('stripe')('sk_test_51KWQn4BU58LFQRGJ6ChYO0mTdacnp7JtW2CUVDxt9Z4IuIDzXPHIjtVkJQw6niQZLFkbXp9lSSTm16FYeeHCpPWa00QeSNimEg')
+const cors = require('cors');
+require('dotenv').config();
+
 app.use(express.json())
 app.use(cors())
-
-
-const PORT = process.env.PORT || 5000
-const YOUR_DOMAIN = "https://www.thatguybryan.com"
+const stripe = require("stripe")(process.env.STRIPE_TESTPRIVATEKEY);
+const items = new Map([
+    [1, { priceInCents: 250, name: 'coffee' }]
+])
+const PORT = process.env.PORT || 1220
 
 app.post('/create-checkout-session', async (req, res) => {
-    const session = await stripe.checkout.sessions.create({
-        line_items: [{
-            price: 250,
-            quantity: 1,
-        }],
-        mode: 'payment',
-        success_url: `${YOUR_DOMAIN}?success=true`,
-        cancel_url: `${YOUR_DOMAIN}?canceled=true`
-    })
-    res.redirect(303, session.success_url)
+    try {
+        const session = await stripe.checkout.sessions.create(
+            {
+                payment_method_types: ["card"],
+                line_items: req.body.items.map(({ id, quantity }) => {
+                    const item = items.get(id);
+                    return {
+                        price_data: {
+                            currency: "eur",
+                            product_data: {
+                                name: item.name
+                            },
+                            unit_amount: item.priceInCents,
+                        },
+                        quantity: quantity
+                    }
+                }),
+                mode: "payment",
+                redirect_url: "https://thatguybryan.com"
+            })
+        res.json(session.redirect_url)
+    } catch (e) {
+        res.status(500).json({ error: e.message })
+    }
 })
 
 
-app.listen(PORT, () =>  {
+app.listen(PORT, () => {
     console.log(`App listening on PORT: ${PORT}`)
 })
 
-app.get('/', (req,res) => {
+app.get('/', (req, res) => {
     res.send(JSON.stringify('hello from thatguybryan-server.'))
 })
-app.get('/cool', (req,res) => {
+app.get('/cool', (req, res) => {
     res.send(cool())
 })
