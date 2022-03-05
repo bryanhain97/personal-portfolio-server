@@ -7,7 +7,7 @@ require('dotenv').config();
 
 app.use(express.json())
 app.use(cors())
-const stripe = require("stripe")(process.env.SERVER_TESTPRIVATEKEY);
+const stripe = require("stripe")(process.env.STRIPE_TESTPRIVATEKEY);
 const items = new Map([
     [1, { priceInCents: 250, name: 'A cup of coffee for Bryan' }]
 ])
