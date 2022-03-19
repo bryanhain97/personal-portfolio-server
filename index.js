@@ -11,32 +11,17 @@ const client = new MongoClient(process.env.MONGODB_ATLAS_URI, { useNewUrlParser:
 const items = new Map([
     [1, { priceInCents: 250, name: 'A cup of coffee for Bryan' }]
 ])
-// async function run() {
-//     try {
-//         await client.connect();
-//         console.log("Connected correctly to server");
-//     } catch (err) {
-//         console.log(err.stack);
-//     }
-//     finally {
-//         await client.close();
-//     }
-// }
+
 app.use(express.json())
 app.use(cors())
 const PORT = process.env.PORT || 1220
 
-app.get('/get-books', async (req, res) => {
-    console.log(req)
-    // 1.GET REQUEST FROM CLIENT
-    // 2. SEARCH BOOKS FOR ALL CLIENT REQUEST PROPS
-    // 3. RESPOND WITH BOOK DATA
-    // 4. CONNECT THAT SHIT TO DATABASE!!!!!
-    books.search("Mike Tyson", googleBooksOptions, (error, results, apiResponse) => {
+app.post('/get-books', async (req, res) => {
+    const { searchBy } = req.body;
+    console.log(searchBy)
+    books.search(searchBy, googleBooksOptions('title'), (error, results, apiResponse) => {
         if (!error) {
-            console.log(typeof results)
             res.json(results)
-            // console.log(apiResponse)
         } else {
             console.log(error);
         }
