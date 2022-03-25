@@ -9,7 +9,7 @@ require('dotenv').config();
 const googleBooksOptions = require('./googleBooksOptions')
 const client = new MongoClient(process.env.MONGODB_ATLAS_URI, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 })
 const items = new Map([
-    [1, { priceInCents: 250, name: 'A cup of coffee for Bryan' }]
+    [1, { priceInCents: 250, name: 'TEST - Coffee for Bryan' }]
 ])
 
 app.use(express.json())
